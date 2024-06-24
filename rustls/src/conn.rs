@@ -757,6 +757,12 @@ impl<Data> From<ConnectionCore<Data>> for ConnectionCommon<Data> {
     }
 }
 
+impl<Data> From<ConnectionCommon<Data>> for ConnectionCore<Data> {
+    fn from(conn: ConnectionCommon<Data>) -> Self {
+        conn.core
+    }
+}
+
 /// Interface shared by unbuffered client and server connections.
 pub struct UnbufferedConnectionCommon<Data> {
     pub(crate) core: ConnectionCore<Data>,

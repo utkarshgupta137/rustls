@@ -611,7 +611,7 @@ mod connection {
 
     use pki_types::ServerName;
 
-    use super::ClientConnectionData;
+    use super::{ClientConnectionData, UnbufferedClientConnection};
     use crate::client::EchStatus;
     use crate::common_state::Protocol;
     use crate::conn::{ConnectionCommon, ConnectionCore};
@@ -788,6 +788,13 @@ mod connection {
     impl From<ClientConnection> for crate::Connection {
         fn from(conn: ClientConnection) -> Self {
             Self::Client(conn)
+        }
+    }
+
+    impl From<ClientConnection> for UnbufferedClientConnection {
+        fn from(conn: ClientConnection) -> Self {
+            let core: ConnectionCore<ClientConnectionData> = conn.inner.into();
+            Self { inner: core.into() }
         }
     }
 }
